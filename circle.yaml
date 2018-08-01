@@ -1,0 +1,43 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/php:7.2-apache-node-browsers
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "02:21:3b:66:ad:50:5c:67:dc:54:38:c4:ab:f5:b0:25"
+
+      - run:
+          name: Setup DEIS command...
+          command: |
+            curl -sSL https://gist.githubusercontent.com/gilleyj/265e271c15b29258e33d3e1c2b5a99a0/raw/deis_setup.sh | bash
+
+      - run:
+          name: Update and do installs into environment...
+          command: |
+            echo "do required install steps here..."
+            # sudo apt-get update
+            # sudo apt-get install -y git vim wget libfreetype6-dev libjpeg62-turbo-dev libpng-dev zip unzip
+            # sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+            # sudo docker-php-ext-install pdo_mysql bcmath gd exif zip
+
+      - checkout
+
+      - run:
+          name: Generic test slug...
+          command: |
+            echo "do testing steps here between setup and deploy..."
+
+      - run:
+          name: Deploy to our pod...
+          command: |
+            curl -sSL https://gist.githubusercontent.com/gilleyj/81c365a9f2afc94ba183f0e5d834ce83/raw/deis_deploy.sh | bash
+
+workflows:
+  version: 2
+  pull-requests:
+    jobs:
+      - build
+
+
