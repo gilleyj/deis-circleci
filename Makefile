@@ -7,6 +7,10 @@ rebuild: ## Attempt to rebuild the app without cache
 	docker-compose -f docker-compose.dev.yaml rm --stop --force ;\
 	docker-compose -f docker-compose.dev.yaml build --force-rm --no-cache
 
+rebuilddb: ## Attempt to rebuild the app without cache
+	docker-compose -f docker-compose.dev.yaml rm --stop --force db ;\
+	docker-compose -f docker-compose.dev.yaml build --force-rm --no-cache db
+
 buildall: ## Build the entire rack
 	docker-compose -f docker-compose.dev.yaml stop ;\
 	docker-compose -f docker-compose.dev.yaml build

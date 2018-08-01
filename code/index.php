@@ -1,19 +1,43 @@
 <?php
 
-	$_POST = json_decode(file_get_contents('php://input'), true);
-	error_log(var_dump($_POST));
-	error_log(var_dump($_SERVER));
+	$post = file_get_contents('php://input');
+	$server = json_encode($_SERVER);
 
-	/*
 	$DB_HOST = getenv('DB_HOST');
 	$DB_PORT = getenv('DB_PORT');
 	$DB_USER = getenv('DB_USER');
 	$DB_PASS = getenv('DB_PASS');
 	$DB_NAME = getenv('DB_NAME');
 
+	$payload = $post . $server;
+
+	$DB = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+	$STATEMENT = $DB->prepare('INSERT INTO notification ( recieved, payload ) VALUES (NOW(), ?)');
+	$STATEMENT->bind_param( 's', $payload);
+	$STATEMENT->execute();
+	$DB->close();
+
+	/*
+
 	$DB = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
 
 	if ($DB->connect_error) die("Connection failed: " . $DB->connect_error);
+
+foreach ($data as $user) {
+	$firstname = $user['firstname'];
+	$lastname = $user['lastname'];
+	$gender = $user['firstname'];
+	$username = $user['username'];
+
+	// preparing statement for insert query
+	$st = mysqli_prepare($connection, 'INSERT INTO users(firstname, lastname, gender, username) VALUES (?, ?, ?, ?)');
+
+	// bind variables to insert query params
+	mysqli_stmt_bind_param($st, 'ssss', $firstname, $lastname, $gender, $username);
+
+	// executing insert query
+	mysqli_stmt_execute($st);
+}
 
 	$sql = "SELECT * FROM posts LEFT JOIN authors ON posts.author_id = authors.id ORDER BY posts.date DESC";
 	$result = $DB->query($sql);

@@ -25,7 +25,7 @@ services:
     command: --sql_mode=""
     environment:
       MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: testy
+      MYSQL_DATABASE: deisgithook
 
   adminer:
     image: adminer
