@@ -1,7 +1,8 @@
 <?php
 
 	$_POST = json_decode(file_get_contents('php://input'), true);
-	error_log($_POST);
+	error_log(var_dump($_POST));
+	error_log(var_dump($_SERVER));
 
 	/*
 	$DB_HOST = getenv('DB_HOST');
